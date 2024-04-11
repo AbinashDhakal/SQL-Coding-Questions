@@ -1,0 +1,43 @@
+[Monthly Percentage Difference](https://platform.stratascratch.com/coding/10319-monthly-percentage-difference?code_type=1)
+
+
+Given a table of purchases by date, calculate the month-over-month percentage change in revenue. The output should include the year-month date (YYYY-MM) and percentage change, rounded to the 2nd decimal point, and sorted from the beginning of the year to the end of the year.
+The percentage change column will be populated from the 2nd month forward and can be calculated as ((this month's revenue - last month's revenue) / last month's revenue)*100.
+
+WITH month_over_month_change AS (
+    SELECT
+        TO_CHAR(created_at, 'YYYY-MM') AS year_month,
+        SUM(value) AS total_revenue,
+        LAG(SUM(value), 1) OVER (ORDER BY TO_CHAR(created_at, 'YYYY-MM')) AS previous_month_revenue,
+        ROUND(((SUM(value) - LAG(SUM(value), 1) OVER (ORDER BY TO_CHAR(created_at, 'YYYY-MM')))::numeric / NULLIF(LAG(SUM(value), 1) OVER (ORDER BY TO_CHAR(created_at, 'YYYY-MM')), 0) * 100), 2) AS revenue_diff_pct
+    FROM 
+        sf_transactions
+    GROUP BY
+        TO_CHAR(created_at, 'YYYY-MM')
+)
+SELECT 
+    year_month,
+    revenue_diff_pct
+FROM
+    month_over_month_change
+
+ORDER BY
+    year_month;
+
+Output
+
+
+Your Solution:
+year_month	revenue_diff_pct
+2019-01	
+2019-02	-28.56
+2019-03	23.35
+2019-04	-13.84
+2019-05	13.49
+2019-06	-2.78
+2019-07	-6
+2019-08	28.36
+2019-09	-4.97
+2019-10	-12.68
+2019-11	1.71
+2019-12	-2.11
