@@ -1,0 +1,25 @@
+[Workers With The Highest Salaries](https://platform.stratascratch.com/coding/10353-workers-with-the-highest-salaries?code_type=1)
+
+You have been asked to find the job titles of the highest-paid employees.
+Your output should include the highest-paid title or multiple titles with the same salary.
+
+SELECT *
+FROM (
+    SELECT 
+        CASE
+            WHEN salary = (SELECT MAX(salary) FROM worker) THEN title.worker_title
+        END AS best_paid_title
+    FROM 
+        worker
+    INNER JOIN 
+        title ON worker.worker_id = title.worker_ref_id
+) AS subquery
+WHERE 
+    best_paid_title IS NOT NULL
+ORDER BY 
+    best_paid_title;
+
+
+best_paid_title
+Asst. Manager
+Manager
