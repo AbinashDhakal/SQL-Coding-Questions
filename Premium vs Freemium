@@ -1,0 +1,34 @@
+(Premium vs Freemium)[https://platform.stratascratch.com/coding/10300-premium-vs-freemium?code_type=1]
+
+Find the total number of downloads for paying and non-paying users by date. Include only records where non-paying customers have more downloads than paying customers. The output should be sorted by earliest date first and contain 3 columns date, non-paying downloads, paying downloads.
+
+Tables: ms_user_dimension, ms_acc_dimension, ms_download_facts
+
+SELECT 
+    df.date AS date,
+    SUM(CASE WHEN ad.paying_customer = 'no' THEN df.downloads ELSE 0 END) AS non_paying_downloads,
+    SUM(CASE WHEN ad.paying_customer = 'yes' THEN df.downloads ELSE 0 END) AS paying_downloads
+FROM 
+    ms_download_facts df
+INNER JOIN 
+    ms_user_dimension ud ON df.user_id = ud.user_id
+INNER JOIN 
+    ms_acc_dimension ad ON ud.acc_id = ad.acc_id
+GROUP BY 
+    df.date
+HAVING 
+    SUM(CASE WHEN ad.paying_customer = 'no' THEN df.downloads ELSE 0 END) > 
+    SUM(CASE WHEN ad.paying_customer = 'yes' THEN df.downloads ELSE 0 END)
+ORDER BY 
+    df.date;
+
+
+Output
+View the output in a separate browser tab
+Execution time: 0.00856 seconds
+
+date	non_paying_downloads	paying_downloads
+2020-08-16	15	14
+2020-08-17	45	9
+2020-08-18	10	7
+2020-08-21	32	17
