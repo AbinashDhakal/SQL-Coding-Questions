@@ -1,0 +1,36 @@
+[New Products](https://platform.stratascratch.com/coding/10322-finding-user-purchases?code_type=1)
+
+You are given a table of product launches by company by year. Write a query to count the net difference between the number of products companies launched in 2020 with the number of products companies launched in the previous year. Output the name of the companies and a net difference of net products released for 2020 compared to the previous year.
+
+
+
+WITH ProductCounts AS (
+    SELECT
+        company_name,
+        CASE WHEN year = 2020 THEN '2020' ELSE '2019' END AS launch_year,
+        COUNT(*) AS num_products
+    FROM
+        car_launches
+    GROUP BY
+        company_name, launch_year
+)
+
+SELECT
+    company_name,
+    SUM(CASE WHEN launch_year = '2020' THEN num_products ELSE 0 END) -
+    SUM(CASE WHEN launch_year = '2019' THEN num_products ELSE 0 END) AS net_products
+FROM
+    ProductCounts
+GROUP BY 
+    company_name;
+
+
+
+
+Your Solution:
+company_name	net_products
+Ford	-1
+Jeep	1
+Honda	-3
+Chevrolet	2
+Toyota	-1
