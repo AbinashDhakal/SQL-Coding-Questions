@@ -1,0 +1,54 @@
+[Top Percentile Fraud] (https://platform.stratascratch.com/coding/10303-top-percentile-fraud?code_type=1)
+
+ABC Corp is a mid-sized insurer in the US and in the recent past their fraudulent claims have increased significantly for their personal auto insurance portfolio. They have developed a ML based predictive model to identify propensity of fraudulent claims. Now, they assign highly experienced claim adjusters for top 5 percentile of claims identified by the model.
+Your objective is to identify the top 5 percentile of claims from each state. Your output should be policy number, state, claim cost, and fraud score.
+
+WITH percentiles AS (
+    SELECT 
+        state,
+        percentile_cont(0.05) WITHIN GROUP (ORDER BY fraud_score DESC) AS percentile
+    FROM 
+        fraud_score
+    GROUP BY 
+        state
+)
+SELECT 
+    f.policy_num,
+    f.state,
+    f.claim_cost,
+    f.fraud_score
+FROM 
+    fraud_score f
+JOIN 
+    percentiles p ON f.state = p.state
+WHERE 
+    f.fraud_score >= percentile;
+
+
+Output
+View the output in a separate browser tab
+Execution time: 0.00887 seconds
+
+Your Solution:
+policy_num	state	claim_cost	fraud_score
+ABCD1016	CA	1639	0.964
+ABCD1027	CA	2663	0.988
+ABCD1069	CA	1426	0.948
+ABCD1079	CA	4224	0.963
+ABCD1081	CA	1080	0.951
+ABCD1117	NY	4903	0.978
+ABCD1121	NY	4009	0.969
+ABCD1187	NY	3722	0.976
+ABCD1189	NY	3577	0.982
+ABCD1196	NY	2994	0.973
+ABCD1218	FL	1419	0.961
+ABCD1222	FL	2392	0.988
+ABCD1230	FL	2560	0.923
+ABCD1277	FL	2057	0.923
+ABCD1291	FL	2581	0.939
+ABCD1304	TX	1407	0.996
+ABCD1361	TX	4950	0.999
+ABCD1363	TX	4103	0.96
+ABCD1366	TX	2453	0.968
+ABCD1386	TX	4311	0.963
+ABCD1398	TX	3191	0.978
