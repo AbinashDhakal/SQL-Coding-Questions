@@ -1,0 +1,18 @@
+Find students with a median writing score
+
+
+Output ids of students with a median score from the writing SAT.
+
+SELECT student_id
+FROM sat_scores
+WHERE sat_writing = (
+    SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY sat_writing) 
+    FROM sat_scores
+);
+
+
+Your Solution:
+student_id
+100
+109
+113
