@@ -1,0 +1,29 @@
+Unique Users Per Client Per Month
+Write a query that returns the number of unique users per client per month
+
+
+
+SELECT 
+    client_id,
+    EXTRACT(month FROM time_id) AS month,
+    COUNT(DISTINCT user_id) AS users_num
+FROM 
+    fact_events
+GROUP BY 
+    client_id, EXTRACT(month FROM time_id)
+ORDER BY 
+    client_id, EXTRACT(month FROM time_id);
+
+
+Output
+View the output in a separate browser tab
+Execution time: 0.00512 seconds
+
+Your Solution:
+client_id	month	users_num
+desktop	2	13
+desktop	3	16
+desktop	4	11
+mobile	2	9
+mobile	3	14
+mobile	4	9
