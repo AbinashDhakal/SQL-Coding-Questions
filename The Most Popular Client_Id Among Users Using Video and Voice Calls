@@ -1,0 +1,26 @@
+The Most Popular Client_Id Among Users Using Video and Voice Calls
+
+
+Select the most popular client_id based on a count of the number of users who have at least 50% of their events from the following list: 'video call received', 'video call sent', 'voice call received', 'voice call sent'.
+
+
+
+WITH RANK AS(
+SELECT 
+    client_id,
+    COUNT(CASE WHEN event_type IN ('video call received', 'video call sent', 'voice call received', 'voice call sent') THEN 1 END)::float / COUNT(event_id) as call_event_ratio
+FROM 
+    fact_events
+GROUP BY
+    client_id
+ORDER BY call_event_ratio DESC
+)
+SELECT 
+client_id
+FROM RANK
+LIMIT 1;
+
+
+
+client_id
+desktop
