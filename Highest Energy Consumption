@@ -1,0 +1,38 @@
+
+Highest Energy Consumption
+Find the date with the highest total energy consumption from the Meta/Facebook data centers. Output the date along with the total energy consumption across all data centers.
+
+
+
+
+WITH total_energy AS (
+    SELECT *
+    FROM fb_eu_energy eu
+    UNION ALL SELECT *
+    FROM fb_na_energy na
+    UNION ALL SELECT *
+    FROM fb_asia_energy asia
+),
+ranked_energy AS (
+    SELECT 
+        date,
+        SUM(consumption) AS total_energyy,
+        RANK() OVER (ORDER BY SUM(consumption) DESC) AS energy_rank
+    FROM total_energy
+    GROUP BY date
+)
+SELECT 
+    date,
+    total_energyy
+FROM ranked_energy
+WHERE energy_rank = 1
+ORDER BY total_energyy DESC;
+
+
+Output
+View the output in a separate browser tab
+Execution time: 0.00886 seconds
+
+date	total_consumption
+2020-01-06	1250
+2020-01-07	1250
