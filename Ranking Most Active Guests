@@ -1,0 +1,52 @@
+Ranking Most Active Guests
+
+
+--Rank guests based on the total number of messages they've exchanged with any of the hosts. Guests with the same number of messages as other guests should have the same rank. Do not skip rankings if the preceding rankings are identical.
+Output the rank, guest id, and number of total messages they've sent. Order by the highest number of total messages first.
+
+SELECT
+    DENSE_RANK() OVER (ORDER BY SUM(n_messages) DESC) AS ranking,
+    id_guest,
+    SUM(n_messages) AS sum_n_messages
+FROM
+    airbnb_contacts
+GROUP BY
+    id_guest
+ORDER BY
+    ranking;
+
+
+
+Your Solution:
+ranking	id_guest	sum_n_messages
+1	882f3764-05cc-436a-b23b-93fea22ea847	20
+1	62d09c95-c3d2-44e6-9081-a3485618227d	20
+2	b8831610-31f2-4c58-8ada-63b3601ca476	17
+2	91c2a883-04e3-4bbb-a7bb-620531318ab1	17
+3	6133fb99-2391-4d4b-a077-bae40581f925	16
+3	bdaf2e68-86dd-40d9-a5a1-9cc95ea25d91	16
+4	94139517-e7e9-4afb-8b5d-bb6f306bf751	15
+4	d328a4a0-df5f-4851-a864-a8845b45c1e0	15
+4	9b145027-2723-4c5f-988c-b5118c899912	15
+5	136c10f8-af53-4e5a-a5b3-d9c9c495b166	13
+5	6c541a87-d864-4de8-ae05-70ae57b50976	13
+6	8375dde4-0de9-402c-8833-2127c1504601	11
+6	5dacf820-a573-4ce2-9fd8-0d7ed979b822	11
+7	6a8cf97f-8a77-4b55-b79a-b560bca414a4	10
+7	bd8f3dd6-fecc-479a-a88f-1d0049600e9f	10
+7	b2fda15a-89bb-4e6e-ae81-8b21598e2482	10
+8	845e3c1d-6c06-4ef2-ade5-7eecefb56fbe	9
+8	5ed478e0-eae9-4537-826a-04ec779c1fd2	9
+8	29ef2346-5fda-45d7-b4ed-eb34967a62b3	9
+8	125242de-91b4-43bd-a926-75ae4b7a9322	9
+9	5c4b64d5-4869-4a02-b36c-c451758559e0	8
+9	ca6a9321-d7f9-42e9-aeb1-5d1832034da0	8
+9	7e309181-e61e-426b-baef-dd031d5660d3	8
+9	25cfc206-89aa-4e63-b2f4-3cbb8631d9fb	8
+9	70180687-5888-4946-9578-83ab678cb997	8
+9	d418a1ab-b181-40a7-90fe-7216e40dc354	8
+9	aa9cf5bf-5667-4212-8018-1cb8beee530e	8
+9	14f943bb-74e9-458b-be55-203dc7220688	8
+9	67aece73-e112-4e9e-9e05-8a2a94b003b9	8
+9	02f0a750-34da-4268-94e8-f1a371f0460e	8
+10	f4602827-8672-4545-8887-43702f8c7ecc	7
